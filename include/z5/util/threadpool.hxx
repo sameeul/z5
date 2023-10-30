@@ -10,10 +10,6 @@
 #include <stdexcept>
 #include <cmath>
 
-#include <boost/iterator/transform_iterator.hpp>
-#include <boost/iterator/counting_iterator.hpp>
-
-
 /*
  * Copied and slightly adapted from
  * nifty/include/nifty/parallel/threadpool.hxx
@@ -617,10 +613,11 @@ inline void parallel_foreach(
     std::ptrdiff_t nItems,
     F && f)
 {
-    auto beginIter  = boost::counting_iterator<int64_t>(0);
-    auto endIter  = boost::counting_iterator<int64_t>(nItems);
+    std::vector<int64_t> indices(nItems);
+    std::iota(indices.begin(), indices.end(), 0);
 
-    parallel_foreach(nThreads, beginIter, endIter, f, nItems);
+    parallel_foreach(nThreads, indices.begin(), indices.end(), std::forward<F>(f), nItems);
+
 }
 
 
@@ -630,11 +627,10 @@ inline void parallel_foreach(
     std::ptrdiff_t nItems,
     F && f)
 {
+    std::vector<int64_t> indices(nItems);
+    std::iota(indices.begin(), indices.end(), 0);
 
-    auto beginIter  = boost::counting_iterator<int64_t>(0);
-    auto endIter  = boost::counting_iterator<int64_t>(nItems);
-
-    parallel_foreach(threadpool, beginIter, endIter, f, nItems);
+    parallel_foreach(threadpool, indices.begin(), indices.end(), std::forward<F>(f), nItems);
 }
 
 //@}
