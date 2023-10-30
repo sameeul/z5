@@ -27,9 +27,6 @@ message(STATUS "Building z5 v${${PROJECT_NAME}_VERSION}")
 # C++ Standard
 ##############################
 
-# check whether we have c++ 17
-
-
 set(CMAKE_CXX_STANDARD 17)
 
 # make sure the compiler supports the requested c++ standard
@@ -140,24 +137,10 @@ endif()
 # find libraries - pthread
 find_package(Threads)
 
-
-
-
-
-
-
-
-
-
-
+# add C++ filesystem
 if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
     SET(FILESYSTEM_LIBRARIES "stdc++fs")
 endif()
-
-
-
-
-
 
 ###################
 # xtensor libraries

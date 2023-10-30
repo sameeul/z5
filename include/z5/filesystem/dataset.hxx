@@ -250,7 +250,6 @@ namespace filesystem {
                                                std::size_t & chunkSize) const {
             std::ifstream file(path, std::ios::binary);
 
-
             // read the mode
             uint16_t mode;
             file.read((char *) &mode, 2);
