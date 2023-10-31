@@ -9,6 +9,7 @@
 #include <condition_variable>
 #include <stdexcept>
 #include <cmath>
+#include <numeric>
 
 /*
  * Copied and slightly adapted from
