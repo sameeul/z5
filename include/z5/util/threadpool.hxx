@@ -349,13 +349,13 @@ inline void parallel_foreach_impl(
     const std::ptrdiff_t chunkedWorkPerThread = (std::max<std::ptrdiff_t>)(int(workPerThread/3.0f + 0.5f), 1);
 
     std::vector<std::future<void> > futures;
-    for( ;iter<end; iter+=chunkedWorkPerThread)
+    while(iter<end)
     {
         const std::size_t lc = (std::min)(workload, chunkedWorkPerThread);
         workload-=lc;
         futures.emplace_back(
             pool.enqueue(
-                [&f, iter, lc]
+                [&f, iter=iter, lc=lc]
                 (int id)
                 {
                     for(std::size_t i=0; i<lc; ++i)
@@ -363,6 +363,11 @@ inline void parallel_foreach_impl(
                 }
             )
         );
+
+        iter+=lc;
+
+        if(workload==0)
+            break;
     }
     for (auto & fut : futures)
     {
